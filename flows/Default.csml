@@ -1,0 +1,33 @@
+start:
+  say "Hi dear Visitor!"
+  say "Thanks for your interest in our next Cooking Webinar!"
+  say Image("https://www.chez-daphne.com/wordpress/wp-content/uploads/2011/11/swedish_chef.jpg")
+  say Question("Ready for some live cooking?", buttons=[Button("Yes!"), Button("Absolutely 🤗")])
+  hold
+
+  say "Great! Glad to have you on board."
+  goto getData
+
+getData:
+  say "To register to the webinar, I need to get some information."
+  say "Can you tell me your full name?"
+  hold
+
+  remember fullname = event
+  say "Thanks, and I will also need your email address to send you the link to the webinar!"
+  hold
+
+  remember email = event
+  say "Now, would you be so kind in providing me with your phone number so I can text you cooking tips every day?"
+  hold
+
+  remember phone = event
+  goto saveData
+
+saveData:
+  do Fn("google/sheets", method="addRow", row={"email":email, "fullname":fullname, "phone":phone})
+  goto finish
+
+finish:
+  say "Alright {{fullname}}, you've been registered to our next Cooking Webinar!"
+  goto end
